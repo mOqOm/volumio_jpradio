@@ -1,0 +1,26 @@
+{
+  "name": "volumio_jpradio",
+  "version": "1.0.0",
+  "description": "Japanese radio relay server for Volumio",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "capitalize": "^2.0.4",
+    "cron": "^2.1.0",
+    "date-utils": "^1.2.21",
+    "express": "^4.18.2",
+    "got": "^12.5.1",
+    "icy-metadata": "^0.1.2",
+    "log4js": "^6.7.0",
+    "m3u-file-parser": "^0.0.9",
+    "node-yaml-config": "^1.0.0",
+    "sqlite3": "^5.1.2",
+    "tough-cookie": "^4.1.2",
+    "xml2js": "^0.4.23"
+  }
+}
