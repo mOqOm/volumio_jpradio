@@ -2,13 +2,13 @@
 Japanese radio relay server for Volumio
 
 ## Description
-Volumio2でRadikoを聞く場合、[こちらの記事](https://monoworks.co.jp/post/2019-05-05-listen-to-radiko-on-volumio/)
-の方法で可能ですが、いちいちLogitech Media Serverなるものに切り替えるので使い勝手が
-いまひとつよくありません。
-そんな折、[burroさんの投稿](#acknowledgments)と[Trunkeneさんの投稿](#acknowledgments)を見つけ、node.jsとデーモン(サービス)で動くように手を加えてみました。
+Volumio2でRadikoを聞く場合、[こちらの記事](https://monoworks.co.jp/post/2019-05-05-listen-to-radiko-on-volumio/)  
+の方法で可能ですが、いちいちLogitech Media Serverなるものに切り替えるので使い勝手がいまひとつよくありません。  
+そんな折、[burroさんの投稿](#acknowledgments)と[Trunkeneさんの投稿](#acknowledgments)を見つけ、node.jsとデーモン(サービス)で動くように手を加えてみました。  
 基本、処理は丸パクリです<(_ _)>
 
 + 2022/10/09 初期
++ 2022/11/02 TimeFree Downloaderを追加
 
 ## Requirement
 * Volumio3
@@ -36,8 +36,8 @@ Volumio2でRadikoを聞く場合、[こちらの記事](https://monoworks.co.jp/
     pass : foobarhogehoge
 ```
 ## Install
-※ あくまで、私のやった方法です。
-Volumio3が普通に動作している状態で、sshログインし作業。
+※ あくまで、私のやった方法です。  
+Volumio3が普通に動作している状態で、sshログインし作業。  
 この際のユーザはvolumioを使用。
 
 ### 環境
@@ -107,6 +107,42 @@ sudo systemctl start radio.service
 
 sudo systemctl status radio.service
 sudo systemctl enable radio.service
+```
+
+## TimeFree Downloader
+7日前までの番組をDLするコマンドです。cronに設定すると予約録音のように使えます。  
+cronのインストール
+```
+sudo apt-get install cron
+```
+ffmpegを日本語のメタをパラメーターにつけて呼び出すためロケールを設定
+```
+$ sudo locale-gen ja_JP.UTF-8
+$ sudo dpkg-reconfigure locales
+# ja_JP.UTF-8 UTF-8 をgenerateしdefaultに設定
+```
+
+Usage
+```
+$ dlprog.js <STATION_ID> <START_DATETIME> <OUTFILE>
+# STATION_ID: 放送局ID
+# START_DATETIME: YYYYMMDDhhmm
+```
+
+メタデータを下記で設定します。Volumioのアルバムやジャンルからアクセスできます。
+```
+アルバム: Radikoタイムフリー
+ジャンル: Broadcast
+```
+
+crontabの設定
+```
+$ crontab -e
+
+# 以下設定例
+10 15 * * sat /usr/bin/node /home/volumio/radio/dlprog.js FMT "`date +\%Y\%m\%d`1400" "/mnt/USB/xxxxx/radikotf/FTM_SAT1400.m4a" > /dev/null
+00 17 * * sat /usr/bin/node /home/volumio/radio/dlprog.js FMT "`date +\%Y\%m\%d`1600" "/mnt/USB/xxxxx/radikotf/FMT_SAT1600.m4a" > /dev/null
+00 18 * * sun /usr/bin/node /home/volumio/radio/dlprog.js FMT "`date +\%Y\%m\%d`1700" "/mnt/USB/xxxxx/radikotf/FMT_SUN1700.m4a" > /dev/null
 ```
 
 ## Acknowledgments
