@@ -22,6 +22,7 @@ class Radiko {
     #PLAY_URL = 'http://f-radiko.smartstream.ne.jp/%s/_definst_/simul-stream.stream/playlist.m3u8';
     #MAX_RETRY_COUNT = 2;
     #instCtr = 0;
+    #PROG_DAILY_URL = "https://radiko.jp/v3/program/station/date/%s/%s.xml"
     constructor(logger) {
         this.logger = logger;
 
@@ -184,6 +185,58 @@ class Radiko {
         return response.body;
     }
 
+    download = async (station, ft, outfile) => {
+        const url = format(this.#PROG_DAILY_URL, ft.substr(0, 8), station);
+        const response = await got(url);
+        let xmlString = await parseXml(response.body);
+        let progs = xmlString['radiko']['stations'][0]['station'][0]['progs'][0];
+        for await (const prog of progs['prog']) {
+            if (prog.$['ft'] == ft) {
+                let to = prog.$['to'];
+                let title = prog['title'][0];
+                let pfm = prog['pfm'][0];
+                let img = prog['img'][0];
+                // fail if img is set on Volumio
+                this.#download(station, ft, to, outfile, null, title, pfm);
+            }
+        }
+    }
+
+    #download = async (station, ft, to, outfile, mAlbumArt = null, mTitle = null, mArtist = null) => {
+        let url = format('https://radiko.jp/v2/api/ts/playlist.m3u8?station_id=%s&l=15&ft=%s&to=%s', station, ft, to);
+        let m3u8 = await this.#genTempChunkM3u8URL(url, this.token);
+        let param = new Map();
+        param['album'] = '-metadata album="Radikoタイムフリー"';
+        param['album_artist'] = '-metadata album_artist="various"';
+        param['genre'] = '-metadata genre="Broadcast"';
+        param['albumart'] = '';
+        if (mAlbumArt != null) {
+            param['albumart'] = format('-i "%s" -map 0:a -map 1:v -disposition:1 attached_pic', mAlbumArt);
+        }
+        param['title'] = '';
+        if (mTitle != null) {
+            param['title'] = format('-metadata title="%s"', mTitle);
+        }
+        param['artist'] = '';
+        if (mArtist != null) {
+            param['artist'] = format('-metadata artist="%s"', mArtist);
+        }
+
+        let cmd = format('ffmpeg -y -headers "X-Radiko-Authtoken:%s" -i "%s" %s %s %s %s %s %s -codec copy -bsf:a aac_adtstoasc -loglevel error "%s"', this.token, m3u8, param['albumart'], param['album'], param['album_artist'], param['genre'], param['title'], param['artist'], outfile);
+        let proc = spawn(cmd, {
+            shell: true,
+        });
+        proc.stderr.setEncoding("utf8");
+
+        proc.stdout.on('data', (data) => {
+            console.log(data);
+        });
+
+        proc.stderr.on('data', (data) => {
+            console.log(data);
+        });
+    }
+
     #getStations = async () => {
         this.areaData = new Map();
         this.stations = new Map();
@@ -329,11 +382,11 @@ class Radiko {
 
     #genPlaylistMpd = async (urlTemplate, outfile) => {
         var m3u = writer.M3U.create();
-        
+
         for (let station of this.stations.keys()) {
             m3u.addPlaylistItem({
-                duration : -1,
-                uri : urlTemplate + station
+                duration: -1,
+                uri: urlTemplate + station
             });
         }
 
