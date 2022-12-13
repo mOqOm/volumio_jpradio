@@ -11,7 +11,7 @@ import writer from 'm3u-file-parser';
 import tough from 'tough-cookie';
 
 class Radiko {
-    #LOGIN_URL = 'https://radiko.jp/ap/member/login/login';
+    #LOGIN_URL = 'https://radiko.jp/ap/member/webapi/member/login';
     #CHECK_URL = 'https://radiko.jp/ap/member/webapi/member/login/check';
     #LOGOUT_URL = 'https://radiko.jp/ap/member/webapi/member/logout';
     #AUTH_KEY = 'bcd151073c03b352e1ef2fd66c32209da9ca0afa';
@@ -49,7 +49,7 @@ class Radiko {
                 cookieJar = await this.#login(acct);
                 loginState = await this.#checkLogin(cookieJar);
                 if (loginState) {
-                    this.cookie = cookie;
+                    this.cookieJar = cookieJar;
                 }
             }
             this.loginState = loginState;
@@ -96,21 +96,21 @@ class Radiko {
             cookieJar,
             method: 'POST',
             methodRewriting: true,
-            body: {
+            form: {
                 mail: acct['mail'],
                 pass: acct['pass']
-
             },
-            form: {},
         }
         try {
             await got(this.#LOGIN_URL, options);
+            return cookieJar;
         } catch (err) {
+            console.log(err);
             if (err.statusCode == 302) {
                 return cookieJar;
             }
         }
-        return null
+        return null;
     }
 
     #checkLogin = async (cookieJar) => {
@@ -306,7 +306,7 @@ class Radiko {
                 }
             }
         }
-        this.stations = stations
+        this.stations = stations;
     }
 
     getStationAsciiName = async (station) => {
@@ -373,10 +373,10 @@ class Radiko {
             return lines[0];
         } catch (err) {
             if (err.statusCode == 403) {
-                return null
+                return null;
             }
 
-            return null
+            return null;
         }
     }
 
