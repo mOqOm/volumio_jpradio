@@ -2,7 +2,7 @@
 Japanese radio relay server for Volumio
 
 ## Description
-Volumio2でRadikoを聞く場合、[こちらの記事](https://monoworks.co.jp/post/2019-05-05-listen-to-radiko-on-volumio/)  
+Volumio2でRadikoを聞く場合、[こちらの記事](https://monoworks.co.jp/post/2019-05-05-listen-to-radiko-on-volumio/)
 の方法で可能ですが、いちいちLogitech Media Serverなるものに切り替えるので使い勝手がいまひとつよくありません。  
 そんな折、[burroさんの投稿](#acknowledgments)と[Trunkeneさんの投稿](#acknowledgments)を見つけ、node.jsとデーモン(サービス)で動くように手を加えてみました。  
 基本、処理は丸パクリです<(_ _)>
@@ -22,7 +22,7 @@ Volumio2でRadikoを聞く場合、[こちらの記事](https://monoworks.co.jp/
 ### Radikoの拝聴方法
 下記インストール後、raspberry-piを再起動し、Volumio3の「Playlist」>「Radiko」から選局。
 ### Radikoのログインについて
-下記インストール後、「/home/volumio/radio/config.yaml」の以下のように「#」を削除。
+下記インストール後、「/home/volumio/radio/config.yaml」の以下のように「#」を削除。  
 変更前
 ```
   account :
