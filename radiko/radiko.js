@@ -329,14 +329,14 @@ class Radiko {
                     break;
                 }
                 this.logger.info('getting new token');
-                let [authToken, areaID] = await this.#getToken();
+                let [authToken, areaID] = await this.#getToken(this.cookieJar);
                 this.token = authToken;
                 this.areaID = areaID;
             }
 
             if (!m3u8) {
                 this.logger.error('gen temp chunk m3u8 url fail');
-                return null
+                return null;
             } else {
                 let cmd = format('ffmpeg -y -headers X-Radiko-Authtoken:%s -i %s -acodec copy -f adts -loglevel error pipe:1', this.token, m3u8);
                 let proc = spawn(cmd, {
@@ -357,7 +357,7 @@ class Radiko {
         } else {
             this.logger.error(format('%s not in available stations', station));
         }
-        return null
+        return null;
     }
 
     #genTempChunkM3u8URL = async (url, authToken) => {
@@ -375,7 +375,6 @@ class Radiko {
             if (err.statusCode == 403) {
                 return null;
             }
-
             return null;
         }
     }
