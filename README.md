@@ -10,7 +10,7 @@ Volumio2でRadikoを聞く場合、[こちらの記事](https://monoworks.co.jp/
 + 2022/10/09 初期
 + 2022/11/02 TimeFree Downloaderを追加
 + 2022/12/14 PremiumLoginのバグ修正
-+ 2022/12/17 PremiumLogin時セッションがタイムアウトした場合のバグ修正
++ 2022/12/17 PremiumLogin時セッションがタイムアウトした場合のバグ修正/番組表のデータ更新されないバグ修正
 
 ## Requirement
 * Volumio3
