@@ -58,7 +58,7 @@ const job = new CronJob({
 
 async function pgupdate() {
     logger.info('Updating program listings');
-    await prg.updatePrograms(rdk.areaID);
+    await prg.updatePrograms();
     await prg.clearOldProgram();
 }
 

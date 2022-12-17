@@ -64,7 +64,7 @@ class Radiko {
             this.logger.info('getting stations');
             await this.#getStations();
             if (playList) {
-                if (tgtEnv == 'VOLUMIO') {
+                if (tgtEnv === 'VOLUMIO') {
                     await this.#genPlayListVolumio(
                         playList.url,
                         playList.file
@@ -106,7 +106,7 @@ class Radiko {
             return cookieJar;
         } catch (err) {
             console.log(err);
-            if (err.statusCode == 302) {
+            if (err.statusCode === 302) {
                 return cookieJar;
             }
         }
@@ -191,7 +191,7 @@ class Radiko {
         let xmlString = await parseXml(response.body);
         let progs = xmlString['radiko']['stations'][0]['station'][0]['progs'][0];
         for await (const prog of progs['prog']) {
-            if (prog.$['ft'] == ft) {
+            if (prog.$['ft'] === ft) {
                 let to = prog.$['to'];
                 let title = prog['title'][0];
                 let pfm = prog['pfm'][0];
@@ -372,7 +372,7 @@ class Radiko {
             const lines = response.body.match(/^https?:\/\/.+m3u8$/gm);
             return lines[0];
         } catch (err) {
-            if (err.statusCode == 403) {
+            if (err.statusCode === 403) {
                 return null;
             }
             return null;
@@ -428,7 +428,7 @@ class Radiko {
     del = async () => {
         this.#instCtr -= 1;
         this.logger.debug(format('Radiko destructor: %s'), this.#instCtr);
-        if (this.#instCtr == 0) {
+        if (this.#instCtr === 0) {
             let res = this.#logout();
             this.logger.debug(res);
         }
