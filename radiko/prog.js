@@ -72,26 +72,29 @@ class RdkProg {
         }
     }
 
-    updatePrograms = async (area) => {
+    updatePrograms = async () => {
         let curdt = new Date().toFormat('YYYYMMDD');
-        let url = format(this.#PROG_URL, curdt, area)
+        for (let i = 1; i <= 47; i++) {
+            let areaID = format('JP%d', i);
+            let url = format(this.#PROG_URL, curdt, areaID)
 
-        const response = await got(url);
-
-        let data = await parseXml(response.body);
-
-        for await (let stations of data['radiko']['stations']) {
-            for await (let station of stations['station']) {
-                for await (let progs of station['progs']) {
-                    for await (let prog of progs['prog']) {
-                        await this.putProgram({
-                            station: station.$['id'],
-                            id: station.$['id'] + prog.$['id'],
-                            ft: prog.$['ft'],
-                            tt: prog.$['to'],
-                            title: prog['title'][0],
-                            pfm: prog['pfm'][0]
-                        });
+            const response = await got(url);
+    
+            let data = await parseXml(response.body);
+    
+            for await (let stations of data['radiko']['stations']) {
+                for await (let station of stations['station']) {
+                    for await (let progs of station['progs']) {
+                        for await (let prog of progs['prog']) {
+                            await this.putProgram({
+                                station: station.$['id'],
+                                id: station.$['id'] + prog.$['id'],
+                                ft: prog.$['ft'],
+                                tt: prog.$['to'],
+                                title: prog['title'][0],
+                                pfm: prog['pfm'][0]
+                            });
+                        }
                     }
                 }
             }
