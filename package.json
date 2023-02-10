@@ -11,15 +11,15 @@
   "license": "ISC",
   "dependencies": {
     "capitalize": "^2.0.4",
-    "cron": "^2.1.0",
+    "cron": "^2.2.0",
     "date-utils": "^1.2.21",
     "express": "^4.18.2",
-    "got": "^12.5.1",
+    "got": "^12.5.3",
     "icy-metadata": "^0.1.2",
-    "log4js": "^6.7.0",
+    "log4js": "^6.7.1",
     "m3u-file-parser": "^0.0.9",
     "node-yaml-config": "^1.0.0",
-    "sqlite3": "^5.1.2",
+    "sqlite3": "^5.1.4",
     "tough-cookie": "^4.1.2",
     "xml2js": "^0.4.23"
   }

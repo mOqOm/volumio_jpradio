@@ -39,7 +39,7 @@ class Radiko {
     init = async (tgtEnv = 'VOLUMIO', acct, playList, forceGetStations = false) => {
         this.#instCtr += 1;
         this.logger.debug(format('Radiko constructor: %s'), this.#instCtr);
-        let cookieJar = new tough.CookieJar();;
+        let cookieJar = new tough.CookieJar();
         if (acct) {
             var loginState = null;
             if (this.cookieJar) {
@@ -54,7 +54,7 @@ class Radiko {
             }
             this.loginState = loginState;
         } else {
-            this.loginState = null
+            this.loginState = null;
         }
 
         if (forceGetStations || !this.areaID) {
@@ -252,7 +252,7 @@ class Radiko {
             data['region'] = new Map();
             data['stations'] = [];
 
-            data['region'] = stationsTemp.$
+            data['region'] = stationsTemp.$;
 
             for await (const stationTemp of stationsTemp['station']) {
                 data['stations'].push({
@@ -329,7 +329,7 @@ class Radiko {
                     break;
                 }
                 this.logger.info('getting new token');
-                let [authToken, areaID] = await this.#getToken(this.cookieJar);
+                let [authToken, areaID] = await this.#getToken();
                 this.token = authToken;
                 this.areaID = areaID;
             }
