@@ -11,6 +11,7 @@ Volumio2でRadikoを聞く場合、[こちらの記事](https://monoworks.co.jp/
 + 2022/11/02 TimeFree Downloaderを追加
 + 2022/12/14 PremiumLoginのバグ修正
 + 2022/12/17 PremiumLogin時セッションがタイムアウトした場合のバグ修正/番組表のデータ更新されないバグ修正
++ 2023/11/04 npmモジュールを変更(初期インストールの高速化)
 
 ## Requirement
 * Volumio3
@@ -44,12 +45,12 @@ Volumio3が普通に動作している状態で、sshログインし作業。
 
 ### 環境
 * Raspberry Pi 4 Model B
-* Volumio3(Ver:3.378)
+* Volumio3(Ver:3.546)
 * Node.js(Ver:14.15.4)
-* npm(Ver:8.19.2)
+* npm(Ver:6.14.10)
 * Python3(Ver:3.7.3)
-* Python(Ver:2.7.16)
-* ffmpeg(Ver:4.1.9-0+deb10u1)
+* Python2(Ver:2.7.16)
+* ffmpeg(Ver:4.1.11-0+deb10u1)
 
 ### 日本時間にするためTimezoneを変更
 ```bash
@@ -65,12 +66,8 @@ $ cd radio
 
 ### パッケージのインストール
 ```bash
-$ sudo apt-get update
-$ sudo apt-get install -y build-essential
-# npmのアップデート
-$ sudo npm install -g npm
 # パッケージのインストール
-$ sudo npm install express sqlite3 node-yaml-config date-utils xml2js log4js got capitalize m3u-file-parser icy-metadata cron tough-cookie
+$ sudo npm install
 ```
 
 ### 動作確認
