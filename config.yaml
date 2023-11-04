@@ -5,7 +5,6 @@ default:
     playlist_file_mpd : /var/lib/mpd/playlists/00_radiko.m3u
     # For volumio playlist
     playlist_file_volumio : /data/playlist/Radiko
-    pgdbname : radikopg.db
 
   # Account settings
   account :
