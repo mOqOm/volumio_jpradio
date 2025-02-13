@@ -12,6 +12,7 @@ Volumio2でRadikoを聞く場合、[こちらの記事](https://monoworks.co.jp/
 + 2022/12/14 PremiumLoginのバグ修正
 + 2022/12/17 PremiumLogin時セッションがタイムアウトした場合のバグ修正/番組表のデータ更新されないバグ修正
 + 2023/11/04 npmモジュールを変更(初期インストールの高速化)
++ 2025/02/13 FM802が再生できないバグの修正
 
 ## Requirement
 * Volumio3

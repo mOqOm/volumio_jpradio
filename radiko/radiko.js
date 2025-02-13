@@ -28,7 +28,7 @@ class Radiko {
   #AUTH2_URL = 'https://radiko.jp/v2/api/auth2';
   #CHANNEL_AREA_URL = 'http://radiko.jp/v3/station/list/%s.xml';
   #CHANNEL_FULL_URL = 'http://radiko.jp/v3/station/region/full.xml';
-  #PLAY_URL = 'http://f-radiko.smartstream.ne.jp/%s/_definst_/simul-stream.stream/playlist.m3u8';
+  #PLAY_URL = 'https://f-radiko.smartstream.ne.jp/%s/_definst_/simul-stream.stream/playlist.m3u8';
   #MAX_RETRY_COUNT = 2;
   #instCtr = 0;
   #PROG_DAILY_URL = "https://radiko.jp/v3/program/station/date/%s/%s.xml"
@@ -297,7 +297,7 @@ class Radiko {
     for (const region of this.stationData) {
       let regionData = region['region'];
       for (const s of region['stations']) {
-        let stationID = s['id'];
+        let stationID = String(s['id']);
         let regionName = regionData['region_name'];
         let bannerURL = s['banner'];
         let areaID = s['area_id'];
@@ -305,7 +305,9 @@ class Radiko {
         let name = s['name'];
         let asciiName = s['ascii_name'];
 
-        if (this.loginState || this.areaData.get(this.areaID)['stations'].includes(stationID)) {
+        let areaStations = this.areaData.get(this.areaID)['stations'].map(String);
+
+        if (this.loginState || areaStations.includes(stationID)) {
           stations.set(stationID, {
             RegionName: regionName,
             BannerURL: bannerURL,
